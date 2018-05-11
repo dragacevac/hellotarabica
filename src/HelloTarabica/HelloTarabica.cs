@@ -16,7 +16,7 @@ namespace HelloTarabica
             HttpRequestMessage req,
             TraceWriter log)
         {
-            const string Message = "Hello Tarabica!";
+            const string Message = "Hello Tarabica 18!";
 
             return req.CreateResponse(HttpStatusCode.OK, Message);
         }

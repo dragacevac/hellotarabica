@@ -58,10 +58,9 @@ function Get-DeploymentCredentials {
     
     return @($Username, $Password)
 }
-function New-LocalRepository ($Credentials) {
+function New-LocalRepositoryAndAddRemoteRepo ($Credentials) {
     $RepoName = $FunctionAppName
 
-    Remove-Item $TempRepository -Force -Recurse | Out-Null
     New-Item $TempRepository -ItemType Directory -Force | Out-Null
 
     Push-Location $TempRepository
@@ -108,9 +107,6 @@ $TempRepository = "C:/Deployment"
 
 $DeploymentName = "Deployment-$(Get-Date -Format "yyyyMMdd-HHmmssffff")"
 
-$Username = ""
-$Password = ""
-
 ############################################################
 
 New-LoginToAzure
@@ -124,9 +120,9 @@ Set-Resources
 $Credentials = Get-DeploymentCredentials
 
 # Deploy App
-New-LocalRepository $Credentials
+New-LocalRepositoryAndAddRemoteRepo $Credentials
 Invoke-CopyArtifacts
 Invoke-GitPush
 
-#Cleanup
+# Cleanup
 Invoke-RepositoryCleanup
